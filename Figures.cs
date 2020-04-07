@@ -18,7 +18,7 @@ namespace labFigures
 
         public int Draw(Bitmap bmp)
         {
-            if (list.Count == -1)
+            if (list.Count == 0)
                 return 0;
             else
             {

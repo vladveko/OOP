@@ -46,7 +46,7 @@ namespace labFigures
 
         private void DrawBtn_Click(object sender, EventArgs e)
         {
-            if (figures.list.Count == -1)
+            if (figures.list.Count == 0)
             {
                 MessageBox.Show("Список пуст");
             }
