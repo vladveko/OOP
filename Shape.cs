@@ -7,8 +7,9 @@ using System.Drawing;
 
 namespace labFigures
 {
+    [Serializable]
     public abstract class Shape
     { 
-        public abstract void Draw(Bitmap bmp);
+        public abstract void Draw(Graphics graph);
     }
 }
