@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using System.Reflection;
+using ShapeClass;
 
 namespace labFigures
 {

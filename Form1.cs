@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using ShapeClass;
 
 namespace labFigures
 {
@@ -25,6 +26,9 @@ namespace labFigures
         // Переменная статуса отрисовки
         bool draw = false;
 
+        // Список полных названий доступных фигур
+        List<Type> Data = new List<Type>();
+
         // Тип фигуры, которую в данный момент рисуем
         Type currClassType;
         
@@ -41,7 +45,7 @@ namespace labFigures
             colors[4] = System.Drawing.Color.Yellow;
 
             // Устанавливаем фильтры для диалоговых окон
-            openDialog.Filter = "DAT Files (*.dat)|*.dat";
+            openDialog.Filter = "DAT Files (*.dat)|*.dat|Dll Files (*.dll)|*.dll";
             openDialog.FilterIndex = 0;
             openDialog.DefaultExt = "dat";
 
@@ -57,7 +61,8 @@ namespace labFigures
             foreach(Type type in classes)
             {
                 // И добавляем их в комбобокс
-                FiguresComboBox.Items.Add(type.Name);    
+                FiguresComboBox.Items.Add(type.Name);
+                Data.Add(type);
             }
 
             picture.BackColor = System.Drawing.Color.White;
@@ -111,6 +116,31 @@ namespace labFigures
             picture.Invalidate();
         }
 
+        private void BtnLibrary_Click(object sender, EventArgs e)
+        {
+            if (openDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            // получаем выбранный файл
+            string filename = openDialog.FileName;
+            try
+            {
+                // Достаем классы из dll
+                List<Type> classes = ClassEnumenator.GetClasses<Shape>(Assembly.LoadFile(filename));
+
+                foreach (Type type in classes)
+                {
+                    // И добавляем их в комбобокс
+                    FiguresComboBox.Items.Add(type.Name);
+                    Data.Add(type);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка загрузки");
+            }
+        }
+
         private void BtnSave_Click(object sender, EventArgs e)
         {
             if (saveDialog.ShowDialog() == DialogResult.Cancel)
@@ -126,10 +156,10 @@ namespace labFigures
         {
             if (!draw)
             {
-                string figureName = (string)FiguresComboBox.SelectedItem;
-                if (figureName != null && Color.SelectedIndex != -1)
+                int figureIndex = FiguresComboBox.SelectedIndex;
+                if (figureIndex != -1 && Color.SelectedIndex != -1)
                 {
-                    currClassType = Type.GetType("labFigures." + figureName);
+                    currClassType = Data[figureIndex];
 
                     x1Val = e.X;
                     y1Val = e.Y;
@@ -148,7 +178,7 @@ namespace labFigures
                 MethodInfo method = currClassType.GetMethod("Preview");
 
                 // И вызываем его 
-                method.Invoke(null, new object[] { new Point(x1Val, y1Val), new Point(x2Val, y2Val), e.Graphics, colors[Color.SelectedIndex], Fill.Checked});    
+                method.Invoke(null, new object[] { new PointF(x1Val, y1Val), new PointF(x2Val, y2Val), e.Graphics, colors[Color.SelectedIndex], Fill.Checked});    
             }
         }
     }
