@@ -6,58 +6,63 @@ using System.Threading.Tasks;
 using System.Drawing;
 using ShapeClass;
 
-namespace labFigures
+namespace TrapeziumLib
 {
     [Serializable]
-    public class Ellipse : Shape
+    public class Trapezium : Shape
     {
-        public float a, b;
-        public PointF center;
+        public PointF[] points;
         public Color color;
         // Переменная, определяющая фигура залита или нет
         public bool fill;
 
-        public Ellipse()
+        public Trapezium()
         { }
 
-        public Ellipse(float x1Val, float y1Val, float x2Val, float y2Val, Color col, bool f)
+        public Trapezium(float x1Val, float y1Val, float x2Val, float y2Val, Color col, bool f)
         {
-            a = Math.Abs(x1Val - x2Val);
-            b = Math.Abs(y1Val - y2Val);
-            center = new PointF(x1Val, y1Val);
+            points = new PointF[4];
+            float dlt = (x2Val - x1Val) / 3;
+            points[0] = new PointF(x1Val, y2Val);
+            points[1] = new PointF(x1Val + dlt, y1Val);
+            points[2] = new PointF(x2Val - dlt, y1Val);
+            points[3] = new PointF(x2Val, y2Val);
+
             color = col;
             fill = f;
         }
 
         public static void Preview(PointF p1Val, PointF p2Val, Graphics g, Color color, bool fill)
         {
-            
-            float a = Math.Abs(p1Val.X - p2Val.X);
-            float b = Math.Abs(p1Val.Y - p2Val.Y);
+            PointF[] temp = new PointF[4];
+            float dlt = (p2Val.X - p1Val.X) / 3;
+            temp[0] = new PointF(p1Val.X, p2Val.Y);
+            temp[1] = new PointF(p1Val.X + dlt, p1Val.Y);
+            temp[2] = new PointF(p2Val.X - dlt, p1Val.Y);
+            temp[3] = p2Val;
+
             if (fill)
             {
                 SolidBrush brush = new SolidBrush(color);
-                g.FillEllipse(brush, p1Val.X - a, p1Val.Y - b, 2 * a, 2 * b);
+                g.FillPolygon(brush, temp);
             }
             else
             {
                 Pen pen = new Pen(color, 2);
-                g.DrawEllipse(pen, p1Val.X - a, p1Val.Y - b, 2 * a, 2 * b);
+                g.DrawPolygon(pen, temp);
             }
-            
         }
-
         public override void Draw(Graphics graph)
         {
             if (fill)
             {
                 SolidBrush brush = new SolidBrush(color);
-                graph.FillEllipse(brush, center.X - a, center.Y - b, 2*a, 2*b);
+                graph.FillPolygon(brush, points);
             }
             else
             {
                 Pen pen = new Pen(color, 2);
-                graph.DrawEllipse(pen, center.X - a, center.Y - b, 2*a, 2*b);
+                graph.DrawPolygon(pen, points);
             }
         }
     }

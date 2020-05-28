@@ -52,7 +52,6 @@
     <Compile Include="Figures.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="Form1.cs">
@@ -63,7 +62,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shape.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,6 +87,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PolygonLib\TrapeziumLib.csproj">
+      <Project>{cc41c6d4-cbed-44d0-b7f2-b97c528f41c2}</Project>
+      <Name>TrapeziumLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShapeClass\ShapeClass.csproj">
+      <Project>{40dc175e-b619-48fc-bbc9-f69fdab1995d}</Project>
+      <Name>ShapeClass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

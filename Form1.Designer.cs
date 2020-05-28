@@ -136,6 +136,7 @@
             this.btnLibrary.TabIndex = 31;
             this.btnLibrary.Text = "Load Library";
             this.btnLibrary.UseVisualStyleBackColor = true;
+            this.btnLibrary.Click += new System.EventHandler(this.BtnLibrary_Click);
             // 
             // Canvas
             // 
